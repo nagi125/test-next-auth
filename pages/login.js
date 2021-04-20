@@ -15,18 +15,21 @@ const Login = () => {
     if (errorMsg) setErrorMsg('')
 
     const body = {
-      username: e.currentTarget.username.value,
+      email: e.currentTarget.email.value,
       password: e.currentTarget.password.value,
     }
 
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('http://localhost/api/admin/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+
+      console.log(res);
+
       if (res.status === 200) {
-        Router.push('/')
+        await Router.push('/')
       } else {
         throw new Error(await res.text())
       }
