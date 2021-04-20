@@ -15,3 +15,7 @@ services:
     stdin_open: true
     tty: true
     restart: always
+
+networks:
+  sample-spa:
+    external: true
