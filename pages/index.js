@@ -1,65 +1,45 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useUser } from '../lib/hooks'
+import Layout from '../components/layout'
 
-export default function Home() {
+const Home = () => {
+  const user = useUser()
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Layout>
+        <h1>Passport.js Example</h1>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <p>Steps to test the example:</p>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <ol>
+          <li>Click Login and enter a username and password.</li>
+          <li>
+            You'll be redirected to Home. Click on Profile, notice how your
+            session is being used through a token stored in a cookie.
+          </li>
+          <li>
+            Click Logout and try to go to Profile again. You'll get redirected to
+            Login.
+          </li>
+        </ol>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+        {user && (
+            <>
+              <p>Currently logged in as:</p>
+              <pre>{JSON.stringify(user, null, 2)}</pre>
+            </>
+        )}
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+        <style jsx>{`
+        li {
+          margin-bottom: 0.5rem;
+        }
+        pre {
+          white-space: pre-wrap;
+          word-wrap: break-word;
+        }
+      `}</style>
+      </Layout>
   )
 }
+
+export default Home
