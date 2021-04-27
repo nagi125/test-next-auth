@@ -1,7 +1,9 @@
 import Layout from '../components/layout'
-import { useLoginUser } from "../hooks/useLoginUser";
+import { useLoginUser } from "../hooks/useLoginUser"
+import { useRequireLogin} from "../hooks/useRequireLogin"
 
 const Home = () => {
+  useRequireLogin();
 
   const { loginUser, isAuthChecking } = useLoginUser()
 
