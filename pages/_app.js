@@ -1,46 +1,36 @@
 import '../styles/globals.css'
-import { useState, useEffect } from "react"
-import { useRouter } from 'next/router'
-import fetch from 'isomorphic-unfetch'
+import { useEffect } from "react";
+import { useSetRecoilState, RecoilRoot } from "recoil";
+import { loginUserState } from "../states/loginUser";
+import * as loginUser from "../lib/loginUser";
 
 
 function AppInit() {
+  const setLoginUser = useSetRecoilState(loginUserState)
 
-  const [user, setUser] = useState(null)
-  const router = useRouter()
-
+  // Middleware
   useEffect(() => {
-    if(router.pathname === "/login") return; // pathnameが"/login"の場合には処理を行わない
-    (async () => {
+    (async function () {
+
       try {
-        const res  = await fetch('/api/admin/user')
-        const json = await res.json()
-        await setUser(json)
-
+        const user = loginUser.fetchLoginUser();
+        setLoginUser(user);
       } catch {
-        await setUser(null)
+        setLoginUser(null);
       }
-
-      await (() => {
-        if (user) {
-          console.log(user)
-        } else {
-          console.log(user)
-        }
-      })();
-
     })();
-  }, [router.pathname])
+  }, [])
 
   return null
 }
 
 function MyApp({ Component, pageProps }) {
+
   return(
-      <>
+      <RecoilRoot>
         <Component {...pageProps} />
         <AppInit />
-      </>
+      </RecoilRoot>
   )
 }
 
