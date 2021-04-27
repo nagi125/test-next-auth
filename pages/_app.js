@@ -4,16 +4,14 @@ import { useSetRecoilState, RecoilRoot } from "recoil";
 import { loginUserState } from "../states/loginUser";
 import * as loginUser from "../lib/loginUser";
 
-
 function AppInit() {
   const setLoginUser = useSetRecoilState(loginUserState)
 
   // Middleware
   useEffect(() => {
     (async function () {
-
       try {
-        const user = loginUser.fetchLoginUser();
+        const user = await loginUser.fetchLoginUser();
         setLoginUser(user);
       } catch {
         setLoginUser(null);

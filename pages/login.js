@@ -1,36 +1,14 @@
 import { useState, useEffect } from 'react'
 import Router from 'next/router'
-import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
 import fetch from 'isomorphic-unfetch'
+import * as loginUser from "../lib/loginUser";
+import {useSetRecoilState} from "recoil";
+import {loginUserState} from "../states/loginUser";
 
 const Login = () => {
-  // useUser()
-
-  useEffect(() => {
-    (async () => {
-      // const res  = await fetch('/api/ping')
-      // const json = await res.json()
-      // console.log(json);
-
-      // const postData = {
-      //   hoge: 'Hello',
-      //   fuga: 'World!!',
-      // }
-      //
-      // const res = await fetch('/api/admin/pong', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(postData),
-      //   credentials: 'include'
-      // });
-
-      // console.log(res);
-
-    })();
-  }, [])
-
+  const setLoginUser = useSetRecoilState(loginUserState)
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit(e) {
@@ -51,9 +29,16 @@ const Login = () => {
         credentials: 'include'
       })
 
-      console.log(res);
-
       if (res.status === 200) {
+
+        // リダイレクト前に認証情報をセットしないとチェックができないため
+        try {
+          const user = await loginUser.fetchLoginUser();
+          setLoginUser(user);
+        } catch {
+          setLoginUser(null);
+        }
+
         await Router.push('/')
       } else {
         throw new Error(await res.text())
