@@ -1,8 +1,6 @@
-import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 
 const Home = () => {
-  const user = useUser()
 
   return (
       <Layout>
@@ -21,13 +19,6 @@ const Home = () => {
             Login.
           </li>
         </ol>
-
-        {user && (
-            <>
-              <p>Currently logged in as:</p>
-              <pre>{JSON.stringify(user, null, 2)}</pre>
-            </>
-        )}
 
         <style jsx>{`
         li {
